@@ -1,5 +1,5 @@
 // Update with your config settings.
-require('dotenv').config()
+// require('dotenv').config()
 
 module.exports = {
 
@@ -7,10 +7,10 @@ module.exports = {
     client: 'pg',
     version: 11.5,
     connection: {
-      host: process.env.DB_CONN,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME
+      host: 'e-booking-db.cfwfxw7xy4fu.us-east-2.rds.amazonaws.com',
+      user: 'cpsc_471',
+      password: 'e-booking19',
+      database: 'ebooking_DB'
     }
   },
 
