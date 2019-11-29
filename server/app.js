@@ -8,15 +8,17 @@ const bodyParser = require('body-parser');
 const app = express();
 
 
-const queries = require('./api/routes')
+const auth = require('./auth/index')
+const queries = require('./api/routes');
 
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser());
+app.use(cookieParser( 'keyboard_cat'));// process.env.COOKIE_SECRET));
 
 
+app.use('/auth', auth);
 app.use('/api/v1/testing', queries);
 
 /// catch 404 and forwarding to error handler
