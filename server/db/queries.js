@@ -23,5 +23,17 @@ module.exports = {
 
     updateDOB(id, date) {
         return knex('users').where('userid', id).update({ dob: date })
+    },
+
+    async getAllDoc() {
+        try {
+            res = await knex.raw('SELECT d.userid, u.lname, u.fname FROM doctor AS d, users AS u WHERE d.userid = u.userid;')
+            console.log(res.rows)
+            return res.rows
+
+        } catch (error) {
+            throw error
+
+        }
     }
 }

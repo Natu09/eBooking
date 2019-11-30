@@ -9,6 +9,7 @@ const app = express();
 
 
 const queries = require('./api/routes')
+const auth = require('./auth/index')
 
 app.use(favicon());
 app.use(logger('dev'));
@@ -16,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 
-
+app.use('/auth', auth)
 app.use('/api/v1/testing', queries);
 
 /// catch 404 and forwarding to error handler
