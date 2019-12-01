@@ -8,16 +8,16 @@ $(() => {
         const email = $('#loginEmail').val();
         const password = $('#loginPassword').val();
         const user = {
-            email, 
+            email,
             password
         }
-        login(user) 
-           .then(result => {
-               console.log("justin")
-               window.location.replace("http://localhost:8080/filter-users-fullcalendar/dist/")
-               console.log(result.id)
-               console.log(result)
-           })
+        login(user)
+            .then(result => {
+                console.log("justin")
+                window.location.href = "http://localhost:8080/filter-users-fullcalendar/dist/"
+                console.log(result.id)
+                console.log(result)
+            })
         //    .catch(error => {
         //         console.error(error)
         //         const $errorMessage = $('#errorMessage');
