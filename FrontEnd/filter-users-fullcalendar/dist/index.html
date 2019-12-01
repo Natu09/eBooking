@@ -12,12 +12,12 @@
   <link rel="stylesheet" href="./style.css">
   <script src="./shared.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
 </head>
 
 <body>
   <!-- partial:index.partial.html -->
+
 
 
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
@@ -28,9 +28,9 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
-  <main>
-    <div class="panel panel-default hidden-print">
-      <div class="panel-heading">
+  <main class="row">
+    <div class="panel-default hidden-print">
+      <div class="col-md-auto panel-heading">
         <h3 class="panel-title">Filter Calendar (Users, Calendar and Eventy Type)</h3>
       </div>
       <div class="panel-body">
@@ -38,7 +38,7 @@
         <div class="col-lg-4">
 
           <label for="calendar_view">Filter Eventy Type</label>
-          <div class="input-group">
+          <div class="col-md-auto input-group">
             <select class="filter" id="type_filter" multiple="multiple">
               <option value="Booked">Appointment</option>
               <option value="Available">Available Appointments</option>
@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-6">
 
           <label for="calendar_view">Filter Users</label>
           <div class="input-group" id="docList">
@@ -242,6 +242,7 @@
   <script
     src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js'></script>
   <script src="./script.js"></script>
+
 </body>
 
 </html>
