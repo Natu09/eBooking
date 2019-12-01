@@ -1,4 +1,11 @@
-# eBooking
+# Database Management system for eBooking Application
+
+## Problem Statement 
+
+## Scope of Project
+
+# Getting started 
+
 
 ## How adding the dotenv file
 Run the following command to catch up your node module with the master node module.
