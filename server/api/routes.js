@@ -93,5 +93,26 @@ router.get('/doc', (req, res) => {
         .catch(err => next(err))
 });
 
+router.get('/doc/availabilities', (req, res, next) => {
+    queries.getAllAvailableApt()
+        .then(results => {
+            if (results) {
+                results.rows.forEach(element => {
+                    element['type'] = 'Available'
+                    element['className'] = 'colorAvailable'
+                    element['backgroundColor'] = '#00b33c'
+                    element['textColor'] = '#ffffff'
+                    element['allDay'] = false
+                    element['title'] = "Available"
+
+                })
+                res.send(results.rows);
+            } else {
+                res.send(1)
+            }
+        })
+        .catch(err => next(err))
+})
+
 
 module.exports = router;

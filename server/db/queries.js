@@ -35,5 +35,11 @@ module.exports = {
             throw error
 
         }
+    },
+
+    getAllAvailableApt() {
+        return knex.raw('SELECT doc.userid AS doc_id, doc.start_time AS start, doc.end_time AS end FROM "availabilities" as doc \
+                        WHERE NOT EXISTS (SELECT * FROM "Appointment" as apt \
+                         WHERE apt.doctor_id = doc.userid AND ((doc.start_time, doc.end_time)OVERLAPS(apt.start_time, apt.end_time)));')
     }
 }

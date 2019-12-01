@@ -19,6 +19,11 @@ $(document).ready(async function () {
     })
     .catch(weSuck)
 
+  getAllAvailableApt()
+    .then(results => {
+      console.log(results)
+    })
+    .catch(weSuck)
 
   var calendar = $('#calendar').fullCalendar({
 
@@ -26,34 +31,13 @@ $(document).ready(async function () {
 
       var startTimeEventInfo = moment(event.start).format('HH:mm');
       var endTimeEventInfo = moment(event.end).format('HH:mm');
-      var displayEventDate;
-
-      let doc_list = getAllDoc()
-      $.each(doc_list, function (i, item) {
-        console.log(item)
-      })
-
-      if (event.avatar.length > 1) {
-
-        element.find(".fc-content").css('padding-left', '55px');
-        element.find(".fc-content").after($("<div class=\"fc-avatar-image\"></div>").html('<img src=\'' + event.avatar + '\' />'));
-
-      }
-
-      if (event.allDay == false) {
-        displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;
-      } else {
-        displayEventDate = "All Day";
-      }
+      var displayEventDate = startTimeEventInfo + " - " + endTimeEventInfo;;
 
       element.popover({
         title: '<div class="popoverTitleCalendar" style="background-color:' + event.backgroundColor + '; color:' + event.textColor + '">' + event.title + '</div>',
         content: '<div class="popoverInfoCalendar">' +
-
-          '<p><strong>Username:</strong> ' + event.username + '</p>' +
-          '<p><strong>Event Type:</strong> ' + event.type + '</p>' +
+          '<p><strong>Doctor:</strong> ' + event.doc_id + '</p>' +
           '<p><strong>Event Time:</strong> ' + displayEventDate + '</p>' +
-          '<div class="popoverDescCalendar"><strong>Description:</strong> ' + event.description + '</div>' +
           '</div>',
         delay: {
           show: "800",
@@ -65,25 +49,23 @@ $(document).ready(async function () {
         container: 'body'
       });
 
-      if (event.username == "Caio Vitorelli") {
-        element.css('background-color', '#f4516c');
+      if (event.type == "available") {
+        element.css('background-color', '#ff6666');
       }
-      if (event.username == "Peter Grant") {
-        element.css('background-color', '#1756ff');
-      }
-      if (event.username == "Adam Rackham") {
-        element.css('background-color', '#9816f4');
+      if (event.type == "booked") {
+        element.css('background-color', '#228B22');
       }
 
-      var show_username, show_type = true, show_calendar = true;
+      var show_type = true, show_calendar = true;
 
-      var username = $('input:checkbox.filter:checked').map(function () {
-        return $(this).val();
-      }).get();
+      // var username = $('input:checkbox.filter:checked').map(function () {
+      //   return $(this).val();
+      // }).get();
+
       var types = $('#type_filter').val();
       var calendars = $('#calendar_filter').val();
 
-      show_username = username.indexOf(event.username) >= 0;
+      // show_username = username.indexOf(event.username) >= 0;
 
       if (types && types.length > 0) {
         if (types[0] == "all") {
@@ -101,7 +83,7 @@ $(document).ready(async function () {
         }
       }
 
-      return show_username && show_type && show_calendar;
+      return show_type && show_calendar;
 
     },
     customButtons: {
@@ -161,15 +143,15 @@ $(document).ready(async function () {
     },
     dayClick: function (startDate, jsEvent, view) {
 
-      //var today = moment();
-      //var startDate;
+      // var today = moment();
+      // var startDate;
 
-      //if(view.name == "month"){
+      // if (view.name == "month") {
 
-      //  startDate.set({ hours: today.hours(), minute: today.minutes() });
-      //  alert('Clicked on: ' + startDate.format());
+      //   startDate.set({ hours: today.hours(), minute: today.minutes() });
+      //   alert('Clicked on: ' + startDate.format());
 
-      //}
+      // }
 
     },
     select: function (startDate, endDate, jsEvent, view) {
@@ -203,20 +185,20 @@ $(document).ready(async function () {
         '</ul>';
 
 
-      $(".fc-body").unbind('click');
-      $(".fc-body").on('click', 'td', function (e) {
+      // $(".fc-body").unbind('click');
+      // $(".fc-body").on('click', 'td', function (e) {
 
-        document.getElementById('contextMenu').innerHTML = (HTMLContent);
+      //   document.getElementById('contextMenu').innerHTML = (HTMLContent);
 
-        $contextMenu.addClass("contextOpened");
-        $contextMenu.css({
-          display: "block",
-          left: e.pageX,
-          top: e.pageY
-        });
-        return false;
+      //   $contextMenu.addClass("contextOpened");
+      //   $contextMenu.css({
+      //     display: "block",
+      //     left: e.pageX,
+      //     top: e.pageY
+      //   });
+      //   return false;
 
-      });
+      // });
 
       $contextMenu.on("click", "a", function (e) {
         e.preventDefault();
@@ -233,10 +215,15 @@ $(document).ready(async function () {
 
     },
     eventClick: function (event, jsEvent, view) {
+      if (event.type == "Available") {
+        bookEvent(event)
+      } else {
+        editEvent(event);
+      }
 
-      editEvent(event);
 
     },
+    // eventOverlap: false,
     locale: 'en-GB',
     timezone: "local",
     nextDayThreshold: "09:00:00",
@@ -250,12 +237,12 @@ $(document).ready(async function () {
     eventLimit: true,
     eventLimitClick: 'week', //popover
     navLinks: true,
-    defaultDate: moment('2018-03-07'),
+    defaultDate: moment('2018-03-07'),      // Change later
     timeFormat: 'HH:mm',
     defaultTimedEventDuration: '01:00:00',
     editable: true,
     minTime: '07:00:00',
-    maxTime: '18:00:00',
+    maxTime: '20:00:00',
     slotLabelFormat: 'HH:mm',
     weekends: true,
     nowIndicator: true,
@@ -264,7 +251,9 @@ $(document).ready(async function () {
     eventLongPressDelay: 0,
     selectLongPressDelay: 0,
 
-    events: []
+    events: await getAllAvailableApt()
+
+
 
   });
 
@@ -354,7 +343,6 @@ $(document).ready(async function () {
         var eventData = {
           _id: eventId,
           title: title,
-          avatar: 'https://republika.mk/wp-content/uploads/2017/07/man-852762_960_720.jpg',
           start: startDay,
           end: endDay,
           description: description,
@@ -377,6 +365,36 @@ $(document).ready(async function () {
       }
     });
   }
+
+  bookEvent = function (event, element, view) {
+    let start = new Date(event.start);
+    let startTime = start.toUTCString();
+
+    let end = new Date(event.end);
+    let endTime = end.toUTCString()
+
+
+    $('#bookAppointment').modal('show')
+    $('#docId').text(event.doc_id);
+    $('#startTime').text(start);
+    $('#endTime').text(endTime);
+
+  }
+
+
+
+
+  //<ul style="list-style-type:circle;">
+  //<li><b>Coffee</b>: meh</li>
+  //<li>Tea</li>
+  //<li>Milk</li>
+  //</ul>
+
+  // console.log(item)
+  // let doc_name = `${item.fname} ${item.lname}`
+  // let input_ops = '<input class=\'filter\' type="checkbox" value="' + `${item.userid}` + '" checked>' + doc_name
+  // let $label_ops = $('<label class="checkbox-inline"></label>').html(input_ops)
+  // $doc_ops.append($label_ops)
 
   //EDIT EVENT CALENDAR
 
@@ -504,6 +522,10 @@ $(document).ready(async function () {
 // Query function to retrieve all doctors
 function getAllDoc() {
   return $.get(`${API_URL}/api/v1/testing/doc`)
+}
+
+function getAllAvailableApt() {
+  return $.get(`${API_URL}/api/v1/testing/doc/availabilities`)
 }
 
 

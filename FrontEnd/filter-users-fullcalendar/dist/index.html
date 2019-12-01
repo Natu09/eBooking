@@ -40,12 +40,8 @@
           <label for="calendar_view">Filter Eventy Type</label>
           <div class="input-group">
             <select class="filter" id="type_filter" multiple="multiple">
-              <option value="Appointment">Appointment</option>
-              <option value="Check-in">Check-in</option>
-              <option value="Checkout">Checkout</option>
-              <option value="Inventory">Inventory</option>
-              <option value="Valuation">Valuation</option>
-              <option value="Viewing">Viewing</option>
+              <option value="Booked">Appointment</option>
+              <option value="Available">Available Appointments</option>
             </select>
           </div>
         </div>
@@ -192,6 +188,46 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+
+    <!-- BOOK APPOINTMENT MODAL -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="bookAppointment">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Book<span class="eventName"></span></h4>
+          </div>
+          <div class="modal-body" id="appoint_details">
+            <ul style="list-style-type:circle;">
+              <li><b>Doctor:</b> <span id="docId"></span></li>
+              <li><b>Start Time:</b> <span id="startTime"></span></li>
+              <li><b>End Time:</b> <span id="endTime"></span></li>
+            </ul>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="book">Book</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
   </main>
 
   <script
