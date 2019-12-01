@@ -4,6 +4,7 @@ const favicon = require('static-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 
 const app = express();
 
@@ -15,11 +16,10 @@ app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser( 'keyboard_cat'));// process.env.COOKIE_SECRET));
+app.use(cookieParser());
+app.use(cors());
 
-
-app.use('/auth', auth);
-// app.use('/', index)
+app.use('/auth', auth)
 app.use('/api/v1/testing', queries);
 
 /// catch 404 and forwarding to error handler

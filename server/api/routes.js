@@ -22,16 +22,16 @@ function isValidID(req, res, next) {
 }
 
 
-router.get('/:id', isValidID, (req, res, next) => {
-    queries.getUserByID(req.params.id)
-        .then(result => {
-            if (result) {
-                res.send(result);
-            } else {
-                next()
-            }
-        })
-})
+// router.get('/:id', isValidID, (req, res, next) => {
+//     queries.getUserByID(req.params.id)
+//         .then(result => {
+//             if (result) {
+//                 res.send(result);
+//             } else {
+//                 next()
+//             }
+//         })
+// })
 
 router.get('/failed', (req, res) => {
     res.send('Something is wrong with your form =(');
@@ -52,19 +52,18 @@ async function isValidPassword(req, res, next) {
     }
 }
 
+// // Dummy admin sign-Up 
+// router.post('/', isValidPassword, async (req, res, next) => {
+//     bcrypt.hash(req.body.password, 10)
+//         .then(hashedPass => {
+//             queries.addAdmin(req.body.username, hashedPass)
+//         })
+//         .then(results => {
+//             res.send(results);
+//         })
+//         .catch(err => next(err))
 
-// Dummy admin sign-Up 
-router.post('/', isValidPassword, async (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
-        .then(hashedPass => {
-            queries.addAdmin(req.body.username, hashedPass)
-        })
-        .then(results => {
-            res.send(results);
-        })
-        .catch(err => next(err))
-
-});
+// });
 
 
 
@@ -78,6 +77,55 @@ router.put('/:id', isValidID, (req, res, next) => {
 
 })
 
+
+
+router.get('/doctor_staff/availability/:id', (req, res, next) => {
+    queries.getUserByID(req.params.id)
+        .then(result => {
+            if (result) {
+                res.send(result.fname);
+            } else {
+                res.send('No user with that ID found');
+            }
+
+        })
+        .catch(err => next(err))
+})
+
+router.get('/doc', (req, res) => {
+    queries.getAllDoc()
+        .then(results => {
+            if (results) {
+                res.send(results);
+            } else {
+                res.send('No user with that ID found');
+            }
+
+        })
+        .catch(err => next(err))
+});
+
+
+router.get('/doc/availabilities', (req, res, next) => {
+    queries.getAllAvailableApt()
+        .then(results => {
+            if (results) {
+                results.rows.forEach(element => {
+                    element['type'] = 'Available'
+                    element['className'] = 'colorAvailable'
+                    element['backgroundColor'] = '#00b33c'
+                    element['textColor'] = '#ffffff'
+                    element['allDay'] = false
+                    element['title'] = "Available"
+
+                })
+                res.send(results.rows);
+            } else {
+                res.send(1)
+            }
+        })
+        .catch(err => next(err))
+})
 
 
 module.exports = router;

@@ -174,8 +174,8 @@ body{
     cursor: e-resize;
     background: none;
 }
-.colorAppointment :before {
-    background-color: #9F4AFF;
+.colorAvailable :before {
+    background-color: #00cc44;
     border-right: 1px solid rgba(255, 255, 255, 0.6);
     display: block;
     content: " ";
@@ -186,66 +186,7 @@ body{
     top: 0;
     left: -1px;
 }
-.colorCheck-in :before {
-    background-color: #ff4747;
-    border-right: 1px solid rgba(255, 255, 255, 0.6);
-    display: block;
-    content: " ";
-    position: absolute;
-    height: 100%;
-    width: 8px;
-    border-radius: 3px 0 0 3px;
-    top: 0;
-    left: -1px;
-}
-.colorCheckout :before {
-    background-color: #FFC400;
-    border-right: 1px solid rgba(255, 255, 255, 0.6);
-    display: block;
-    content: " ";
-    position: absolute;
-    height: 100%;
-    width: 8px;
-    border-radius: 3px 0 0 3px;
-    top: 0;
-    left: -1px;
-}
-.colorInventory :before {
-    background-color: #FE56F2;
-    border-right: 1px solid rgba(255, 255, 255, 0.6);
-    display: block;
-    content: " ";
-    position: absolute;
-    height: 100%;
-    width: 8px;
-    border-radius: 3px 0 0 3px;
-    top: 0;
-    left: -1px;
-}
-.colorValuation :before {
-    background-color: #0DE882;
-    border-right: 1px solid rgba(255, 255, 255, 0.6);
-    display: block;
-    content: " ";
-    position: absolute;
-    height: 100%;
-    width: 8px;
-    border-radius: 3px 0 0 3px;
-    top: 0;
-    left: -1px;
-}
-.colorViewing :before {
-    background-color: #26CBFF;
-    border-right: 1px solid rgba(255, 255, 255, 0.6);
-    display: block;
-    content: " ";
-    position: absolute;
-    height: 100%;
-    width: 8px;
-    border-radius: 3px 0 0 3px;
-    top: 0;
-    left: -1px;
-}
+
 select.filter{
   width: 500px !important;
 }
