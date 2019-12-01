@@ -52,7 +52,6 @@ async function isValidPassword(req, res, next) {
     }
 }
 
-
 // // Dummy admin sign-Up 
 // router.post('/', isValidPassword, async (req, res, next) => {
 //     bcrypt.hash(req.body.password, 10)
@@ -65,6 +64,19 @@ async function isValidPassword(req, res, next) {
 //         .catch(err => next(err))
 
 // });
+
+
+
+router.put('/:id', isValidID, (req, res, next) => {
+    const now = new Date()
+    queries.updateDOB(req.params.id, req.body)
+        .then(results => {
+            res.send(results)
+        })
+        .catch(err => next(err))
+
+})
+
 
 
 router.get('/doctor_staff/availability/:id', (req, res, next) => {
@@ -92,6 +104,7 @@ router.get('/doc', (req, res) => {
         })
         .catch(err => next(err))
 });
+
 
 router.get('/doc/availabilities', (req, res, next) => {
     queries.getAllAvailableApt()

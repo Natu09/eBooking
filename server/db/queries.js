@@ -13,6 +13,16 @@ module.exports = {
         return knex('users').where('email', email);
     },
 
+    getOneByEmail: function (email) {
+        return knex('users').where('email', email).first();
+    },
+    
+
+
+    addUser(user) {
+        return knex('users').insert(user)
+    },
+
     addAdmin(username, password) {
         const admin_info = {
             username: username,

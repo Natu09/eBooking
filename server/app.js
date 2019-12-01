@@ -9,8 +9,8 @@ const cors = require('cors')
 const app = express();
 
 
-const queries = require('./api/routes')
-const auth = require('./auth/index')
+const auth = require('./auth')
+const queries = require('./api/routes');
 
 app.use(favicon());
 app.use(logger('dev'));
