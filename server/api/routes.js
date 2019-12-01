@@ -53,18 +53,6 @@ async function isValidPassword(req, res, next) {
 }
 
 
-<<<<<<< HEAD
-// Dummy admin sign-Up 
-router.post('/', isValidPassword, async (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
-        .then(hashedPass => {
-            queries.addAdmin(req.body.username, hashedPass)
-        })
-        .then(results => {
-            res.json(results);
-        })
-        .catch(err => next(err))
-=======
 // // Dummy admin sign-Up 
 // router.post('/', isValidPassword, async (req, res, next) => {
 //     bcrypt.hash(req.body.password, 10)
@@ -75,7 +63,6 @@ router.post('/', isValidPassword, async (req, res, next) => {
 //             res.send(results);
 //         })
 //         .catch(err => next(err))
->>>>>>> eec6f06a0318f8802b93b0f61943827badbe08f8
 
 // });
 
