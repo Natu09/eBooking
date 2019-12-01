@@ -10,17 +10,21 @@ const app = express();
 
 
 const auth = require('./auth')
-const queries = require('./api/routes');
+const user = require('./dashboard/user');
+const authenticate = require('./auth/middleware')
 
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser());
-app.use(cors());
+app.use(cookieParser('RobinsCock'));
+app.use(cors({
+    origin: 'http://localhost:8080',
+    credentials: true
+}));
 
 app.use('/auth', auth)
-app.use('/api/v1/testing', queries);
+app.use('/user', authenticate.ensureLoggedIn, user);
 
 /// catch 404 and forwarding to error handler
 app.use(function (req, res, next) {

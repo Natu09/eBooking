@@ -521,11 +521,11 @@ $(document).ready(async function () {
 
 // Query function to retrieve all doctors
 function getAllDoc() {
-  return $.get(`${API_URL}/api/v1/testing/doc`)
+  return $.get(`${API_URL}/api/v1/testing/doc`)           // Need to change this
 }
 
 function getAllAvailableApt() {
-  return $.get(`${API_URL}/api/v1/testing/doc/availabilities`)
+  return $.get(`${API_URL}/api/v1/testing/doc/availabilities`)      // Need to change this
 }
 
 
