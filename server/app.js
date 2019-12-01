@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 
-const auth = require('./auth/index')
+const auth = require('./auth')
 const queries = require('./api/routes');
 
 app.use(favicon());
@@ -19,6 +19,7 @@ app.use(cookieParser( 'keyboard_cat'));// process.env.COOKIE_SECRET));
 
 
 app.use('/auth', auth);
+// app.use('/', index)
 app.use('/api/v1/testing', queries);
 
 /// catch 404 and forwarding to error handler

@@ -16,11 +16,11 @@ module.exports = {
     getOneByEmail: function (email) {
         return knex('users').where('email', email).first();
     },
+    
 
-    create: function(user) {
-        return knex('user').insert(user, 'id').then(ids => {
-            return ids[0]
-        })
+
+    addUser(user) {
+        return knex('users').insert(user)
     },
 
     addAdmin(username, password) {

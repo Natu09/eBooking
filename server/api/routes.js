@@ -53,30 +53,30 @@ async function isValidPassword(req, res, next) {
 }
 
 
-// // Dummy admin sign-Up 
-// router.post('/', isValidPassword, async (req, res, next) => {
-//     bcrypt.hash(req.body.password, 10)
-//         .then(hashedPass => {
-//             queries.addAdmin(req.body.username, hashedPass)
-//         })
-//         .then(results => {
-//             res.send(results);
-//         })
-//         .catch(err => next(err))
+// Dummy admin sign-Up 
+router.post('/', isValidPassword, async (req, res, next) => {
+    bcrypt.hash(req.body.password, 10)
+        .then(hashedPass => {
+            queries.addAdmin(req.body.username, hashedPass)
+        })
+        .then(results => {
+            res.send(results);
+        })
+        .catch(err => next(err))
 
-// });
+});
 
 
 
-// router.put('/:id', isValidID, (req, res, next) => {
-//     const now = new Date()
-//     queries.updateDOB(req.params.id, req.body)
-//         .then(results => {
-//             res.send(results)
-//         })
-//         .catch(err => next(err))
+router.put('/:id', isValidID, (req, res, next) => {
+    const now = new Date()
+    queries.updateDOB(req.params.id, req.body)
+        .then(results => {
+            res.send(results)
+        })
+        .catch(err => next(err))
 
-// })
+})
 
 
 
