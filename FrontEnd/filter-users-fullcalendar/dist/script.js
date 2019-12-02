@@ -3,11 +3,16 @@ var editEvent;
 
 $(document).ready(async function () {
 
-  console.log(API_URL);
+  console.log(AUTH_URL);
+
+  console.log(window.location.search)
+  const userId = parseInt(getUrlParameter('id'))
+  console.log(userId)
+
 
   // Gets all the doctors available for booking
   let $doc_ops = $('#docList')
-  getAllDoc()
+  getAllDoc(userId)
     .then(results => {
       $.each(results, (i, item) => {
         console.log(item)
@@ -17,13 +22,8 @@ $(document).ready(async function () {
         $doc_ops.append($label_ops)
       })
     })
-    .catch(weSuck)
+    .catch(err => handleError(err))
 
-  getAllAvailableApt()
-    .then(results => {
-      console.log(results)
-    })
-    .catch(weSuck)
 
   var calendar = $('#calendar').fullCalendar({
 
@@ -251,7 +251,7 @@ $(document).ready(async function () {
     eventLongPressDelay: 0,
     selectLongPressDelay: 0,
 
-    events: await getAllAvailableApt()
+    events: await getAllAvailableApt(userId)
 
 
 
@@ -520,15 +520,23 @@ $(document).ready(async function () {
 });
 
 // Query function to retrieve all doctors
-function getAllDoc() {
-  return $.get(`${API_URL}/api/v1/testing/doc`)           // Need to change this
+function getAllDoc(id) {
+  return $.get(`${AUTH_URL}/user/${id}/doc`)           // Need to change this
 }
 
-function getAllAvailableApt() {
-  return $.get(`${API_URL}/api/v1/testing/doc/availabilities`)      // Need to change this
+function getAllAvailableApt(id) {
+  return $.get(`${AUTH_URL}/user/${id}/availabilities`)      // Need to change this
 }
 
 
-function weSuck() {
-  alert('user not found... and we suck')
+function handleError(error) {
+  console.log(error)
+  window.location = '/login.html'
 }
+
+function getUrlParameter(name) {
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  let results = regex.exec(location.search);
+  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};

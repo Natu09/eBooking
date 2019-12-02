@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const queries = require('../db/queries');
 
-router.get('/:id', (req, res, next) => {
+const authMiddleware = require('../auth/middleware')
+
+router.get('/:id', authMiddleware.allowAccess, (req, res, next) => {
     if (!isNaN(req.params.id)) {
         queries.getUserByID(req.params.id)
             .then(user => {
@@ -24,7 +26,7 @@ router.get('/:id', (req, res, next) => {
 
 
 
-router.get('/doc', (req, res) => {
+router.get('/:id/doc', authMiddleware.allowAccess, (req, res) => {
     queries.getAllDoc()
         .then(results => {
             if (results) {
@@ -39,7 +41,7 @@ router.get('/doc', (req, res) => {
 
 
 
-router.get('/availabilities', (req, res, next) => {
+router.get('/:id/availabilities', authMiddleware.allowAccess, (req, res, next) => {
     queries.getAllAvailableApt()
         .then(results => {
             if (results) {
