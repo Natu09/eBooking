@@ -12,6 +12,7 @@ $(() => {
         login(user)
             .then(result => {
                 console.log(result)
+                window.location = `/user_dashboard.html?id=${result.id}`
             })
             .catch(error => {
                 console.error(error)
