@@ -9,6 +9,7 @@ function ensureLoggedIn(req, res, next) {
 }
 
 function allowAccess(req, res, next) {
+    console.log(req.signedCookies.user_id, req.params.id)
     if (req.signedCookies.user_id == req.params.id) {
         next()
     } else {

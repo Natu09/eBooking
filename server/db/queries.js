@@ -16,7 +16,7 @@ module.exports = {
     getOneByEmail: function (email) {
         return knex('users').where('email', email).first();
     },
-    
+
 
 
     addUser(user) {
@@ -51,5 +51,15 @@ module.exports = {
         return knex.raw('SELECT doc.userid AS doc_id, doc.start_time AS start, doc.end_time AS end FROM "availabilities" as doc \
                         WHERE NOT EXISTS (SELECT * FROM "appointment" as apt \
                          WHERE apt.doctor_id = doc.userid AND ((doc.start_time, doc.end_time)OVERLAPS(apt.start_time, apt.end_time)));')
+    },
+
+    getAllApt(id) {
+        try {
+            let result = knex.raw('SELECT doctor_id AS doc_id, start_time AS start, end_time as end FROM "appointment" WHERE patient_id = ?', [id])
+
+            return result
+        } catch (error) {
+            throw error
+        }
     }
 }
