@@ -237,7 +237,7 @@ $(document).ready(async function () {
     eventLimit: true,
     eventLimitClick: 'week', //popover
     navLinks: true,
-    defaultDate: moment('2018-03-07'),      // Change later
+    defaultDate: Date.now(),      // Change later
     timeFormat: 'HH:mm',
     defaultTimedEventDuration: '01:00:00',
     editable: true,
@@ -531,7 +531,7 @@ function getAllAvailableApt(id) {
 
 function handleError(error) {
   console.log(error)
-  window.location = '/login.html'
+  window.location = '/index.html'
 }
 
 function getUrlParameter(name) {
