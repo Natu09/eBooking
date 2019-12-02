@@ -9,10 +9,6 @@ $(document).ready(async function () {
 
   console.log(AUTH_URL);
 
-  // console.log(window.location.search)
-  // const userId = parseInt(getUrlParameter('id'))
-  // console.log(userId)
-
   // Gets all the doctors available for booking
   let $doc_ops = $('#docList')
   getAllDoc(userId)
@@ -241,7 +237,7 @@ $(document).ready(async function () {
     eventLimit: true,
     eventLimitClick: 'week', //popover
     navLinks: true,
-    defaultDate: moment('2018-03-07'),      // Change later
+    defaultDate: Date.now(),      // Change later
     timeFormat: 'HH:mm',
     defaultTimedEventDuration: '01:00:00',
     editable: true,
