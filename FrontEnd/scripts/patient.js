@@ -128,16 +128,16 @@ $(document).ready(async function () {
 
 
     },
-    eventResize: function (event, delta, revertFunc, jsEvent, ui, view) {
-      $('.popover.fade.top').remove();
-    },
-    eventDragStart: function (event, jsEvent, ui, view) {
-      var draggedEventIsAllDay;
-      draggedEventIsAllDay = event.allDay;
-    },
-    eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
-      $('.popover.fade.top').remove();
-    },
+    // eventResize: function (event, delta, revertFunc, jsEvent, ui, view) {
+    //   $('.popover.fade.top').remove();
+    // },
+    // eventDragStart: function (event, jsEvent, ui, view) {
+    //   var draggedEventIsAllDay;
+    //   draggedEventIsAllDay = event.allDay;
+    // },
+    // eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
+    //   $('.popover.fade.top').remove();
+    // },
     unselect: function (jsEvent, view) {
       //$(".dropNewEvent").hide();
     },
@@ -215,16 +215,16 @@ $(document).ready(async function () {
 
     },
     eventClick: function (event, jsEvent, view) {
+      // console.log(event)
       if (event.type == "Available") {
         bookEvent(event)
-      } else {
-        editEvent(event);
+      } if (event.type == "Booked") {
+        deleteApt(event)
       }
 
-
     },
-    // eventOverlap: false,
-    locale: 'en-GB',
+
+    locale: 'en-CA',
     timezone: "local",
     nextDayThreshold: "09:00:00",
     allDaySlot: true,
@@ -367,31 +367,25 @@ $(document).ready(async function () {
   }
 
   bookEvent = function (event, element, view) {
-    let start = new Date(event.start);
-    let startTime = start.toUTCString();
-
-    let end = new Date(event.end);
-    let endTime = end.toUTCString()
+    const event_times = dateFormatter(event)
+    const startTime = event_times.start_time
+    const endTime = event_times.end_time
 
 
-    $('#bookAppointment').modal('show')
-    $('#docId').text(event.doc_id);
-    $('#startTime').text(start);
+    $('#docId').text(event.doctor_fname + ' ' + event.doctor_lname);
+    $('#startTime').text(startTime);
     $('#endTime').text(endTime);
+    $('#bookAppointment').modal('show')
 
     console.log('Hello Booking')
     console.log(userId)
     $('#bookAppointment').on('click', function () {
-       //  event.preventDefault();
         console.log('submited!!');
-        const doctor_id = $('#docId').text();
-        const start_time = $('#startTime').text();
-        const end_time = $('#endTime').text();
         const app = {
-            // userId,
-            doctor_id,
-            start_time,
-            end_time,
+          doctor_id: event.doc_id,
+          patient_id: userId,
+          start_time: startTime,
+          end_time: endTime
         }
         console.log("clicked")
         console.log(app)
@@ -415,11 +409,63 @@ $(document).ready(async function () {
             // })
   
     });
-
   }
 
 
 
+
+  // Function delete appoint
+  deleteApt = function (event, element, view) {
+    const event_times = dateFormatter(event)
+    const startTime = event_times.start_time
+    const endTime = event_times.end_time
+
+    $('#docId2').text(event.doctor_fname + ' ' + event.doctor_lname);
+    $('#startTime2').text(startTime);
+    $('#endTime2').text(endTime);
+
+    $('#cancelAppointment').modal('show')
+
+    // $('#closeAppointment').modal('close')
+
+    // $('#cancelApt').unbind()
+    $('#cancel').on('click', async function () {
+      const apt = {
+        doctor_id: event.doc_id,
+        patient_id: userId,
+        start_time: startTime,
+        end_time: endTime
+      }
+      // console.log(apt)
+      deleteAppointment(apt, userId)
+        .then(result => {
+          // console.log('Made it here')
+          console.log(result)
+          if (result.rowCount == 1) {
+            console.log('made it here')
+            event.type = 'Available'
+            event.className = ['colorAvailable']
+            event.backgroundColor = '#00b33c'
+            event.title = 'Available'
+            console.log(event)
+            $("#calendar").fullCalendar('updateEvent', event);
+            $('#cancelAppointment').modal('hide');
+            $('#success').modal('show')
+
+          } else {
+            $errorMessage = $('#errorMessage')
+            $errorMessage.text("Something went wrong. We couldn't cancel your Appointment")
+            $errorMessage.show()
+          }
+        })
+        .catch(error => {
+          // console.log(error)
+          $errorMessage = $('#errorMessage')
+          $errorMessage.text(error)
+          $errorMessage.show()
+        })
+    })
+  }
 
 
   //EDIT EVENT CALENDAR
@@ -559,20 +605,6 @@ function getAllApt(id) {
 }
 
 
-function handleError(error) {
-  console.log(error)
-  window.location = '/login.html'
-}
-
-
-function getUrlParameter(name) {
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-  let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  let results = regex.exec(location.search);
-  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-};
-
-
 async function getAllEvents(id) {
   try {
     let available = await getAllAvailableApt(id)
@@ -623,3 +655,44 @@ function book(app ,id) {
   return $.post(`${AUTH_URL}/user/apt/${id}`, app);
 }
 
+
+async function deleteAppointment(apt, id) {
+  let result = await $.ajax({
+    url: `${AUTH_URL}/user/cancel/${id}`,
+    method: 'DELETE',
+    data: apt
+  })
+
+  return result
+}
+
+
+// Helper functions for the calendar
+function dateFormatter(event) {
+  let options = { hour12: false };
+
+  let start = new Date(event.start);
+  let startTime = start.toLocaleString('en-US', options)
+
+  let end = new Date(event.end);
+  let endTime = end.toLocaleString('en-US', options)
+
+  return {
+    start_time: startTime,
+    end_time: endTime
+  }
+}
+
+
+function getUrlParameter(name) {
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  let results = regex.exec(location.search);
+  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+
+// Error handler when the user is not authenticated
+function handleError(error) {
+  console.log(error)
+  window.location = '/login.html'
+}

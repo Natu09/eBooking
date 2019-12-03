@@ -53,6 +53,7 @@ router.get('/availabilities/:id', authMiddleware.allowAccess, (req, res, next) =
                     element['textColor'] = '#ffffff'
                     element['allDay'] = false
                     element['title'] = "Available"
+                    element['editable'] = false
 
                 })
                 res.send(results.rows);
@@ -74,6 +75,7 @@ router.get('/appointments/:id', authMiddleware.allowAccess, (req, res, next) => 
                     element['textColor'] = '#ffffff'
                     element['allDay'] = false
                     element['title'] = "Your Appointment"
+                    element['editable'] = false
 
                 })
                 res.send(results.rows);
@@ -86,41 +88,31 @@ router.get('/appointments/:id', authMiddleware.allowAccess, (req, res, next) => 
 
 // route for booking  appointmets 
 router.post('/apt/:id', (req, res, next) => {
-    console.log("here 1")
+    console.log(req.body)
     // res.send("hi")
     queries.addApt(req.params.id, req.body)   
         .then(results => {  
                 res.send(results);
         })
-        .catch(err => next(err))
+        .catch(err => {
+
+            console.log(err)
+            next(err)
+        })
 });
 
+router.delete('/cancel/:id', authMiddleware.allowAccess, (req, res) => {
+    // console.log(req.body)
+    // console.log(req.params.id)
+    queries.deleteApt(req.params.id, req.body)
+        .then(result => {
+            console.log(result)
+            res.send(result);
+        })
+        .catch(err => next(err))
 
+});
 
-// function eventFormatter(events, type) {
-//     events.forEach(element => {
-//         element['textColor'] = '#ffffff'
-//         element['allDay'] = false
-//         if (type) {
-//             element['type'] = 'Booked'
-//             element['className'] = 'colorBooked'
-//             element['backgroundColor'] = '#0066ff'
-//             element['title'] = "Booked appointmentintment"
-//         } else {
-//             element['type'] = 'Available'
-//             element['className'] = 'colorAvailable'
-//             element['backgroundColor'] = '#00b33c'
-//             element['title'] = "Available"
-//         }
-//     })
-
-//     return events
-// }
-
-// router.get('/:id/events', async (req, res, next) => {
-//     let available_apt = await queries.
-
-// });
 
 
 module.exports = router;
