@@ -84,6 +84,17 @@ router.get('/appointments/:id', authMiddleware.allowAccess, (req, res, next) => 
         .catch(err => next(err))
 })
 
+// route for booking  appointmets 
+router.post('/apt/:id', (req, res, next) => {
+    console.log("here 1")
+    // res.send("hi")
+    queries.addApt(req.params.id, req.body)   
+        .then(results => {  
+                res.send(results);
+        })
+        .catch(err => next(err))
+});
+
 
 
 // function eventFormatter(events, type) {
@@ -94,7 +105,7 @@ router.get('/appointments/:id', authMiddleware.allowAccess, (req, res, next) => 
 //             element['type'] = 'Booked'
 //             element['className'] = 'colorBooked'
 //             element['backgroundColor'] = '#0066ff'
-//             element['title'] = "Booked Appointment"
+//             element['title'] = "Booked appointmentintment"
 //         } else {
 //             element['type'] = 'Available'
 //             element['className'] = 'colorAvailable'

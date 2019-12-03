@@ -13,11 +13,12 @@ $(() => {
             email,
             password
         }
+        console.log(user)
 
         signup(user)
             .then(result => {
                 console.log(result)
-                window.location = `/user_dashboard.html?id=${result.id}`
+                window.location = `/?id=${result.id}`
             })
     
             .catch(error => {

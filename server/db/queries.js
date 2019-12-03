@@ -61,5 +61,22 @@ module.exports = {
         } catch (error) {
             throw error
         }
-    }
+    },
+
+    addApt(apt, id) {
+        try {
+            let params = {
+                dID: parseInt(apt.doctor_id),
+                uID: id,
+                startT: apt.start_time,
+                endT: apt.end_time
+            }
+            let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time)\
+                                    VALUES   (:dID, :uID, :startT , :endT)', params);
+            return result
+
+        } catch (error) {
+            throw error
+        }
+    }   
 }

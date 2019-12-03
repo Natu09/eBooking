@@ -379,6 +379,43 @@ $(document).ready(async function () {
     $('#startTime').text(start);
     $('#endTime').text(endTime);
 
+    console.log('Hello Booking')
+    console.log(userId)
+    $('#bookAppointment').on('click', function () {
+       //  event.preventDefault();
+        console.log('submited!!');
+        const doctor_id = $('#docId').text();
+        const start_time = $('#startTime').text();
+        const end_time = $('#endTime').text();
+        const app = {
+            // userId,
+            doctor_id,
+            start_time,
+            end_time,
+        }
+        console.log("clicked")
+        console.log(app)
+        book(app, userId)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        }) 
+            // .then(result => {
+            //     console.log(result)
+            //     window.location = `/user_dashboard.html?id=${result.id}`
+            // })
+    
+            // .catch(error => {
+            //     console.error(error)
+            //     $errorMessage = $('#errorMessage')
+            //     $errorMessage.text(error.responseJSON.message)
+            //     $errorMessage.show()
+            // })
+  
+    });
+
   }
 
 
@@ -548,3 +585,41 @@ async function getAllEvents(id) {
   }
 
 }
+
+// Code to book an appointment 
+
+
+  // console.log('Hello Booking')
+  // $('#bookAppointment').on('click', function () {
+  //     event.preventDefault();
+  //     console.log('submited!!');
+  //     const doctor_id = $('#docId').text();
+  //     const start_time = $('#startTime').text();
+  //     const end_time = $('#endTime').text();
+  //     const app = {
+  //         doctor_id,
+  //         start_time,
+  //         end_time,
+  //     }
+  //     console.log("clicked")
+  //     console.log(app)
+  //     book(app, userId)
+  //         // .then(result => {
+  //         //     console.log(result)
+  //         //     window.location = `/user_dashboard.html?id=${result.id}`
+  //         // })
+  
+  //         // .catch(error => {
+  //         //     console.error(error)
+  //         //     $errorMessage = $('#errorMessage')
+  //         //     $errorMessage.text(error.responseJSON.message)
+  //         //     $errorMessage.show()
+  //         // })
+
+  // });
+
+function book(app ,id) {
+  console.log("clicked app func")
+  return $.post(`${AUTH_URL}/user/apt/${id}`, app);
+}
+
