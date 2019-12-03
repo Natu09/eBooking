@@ -48,18 +48,48 @@ module.exports = {
     },
 
     getAllAvailableApt() {
-        return knex.raw('SELECT doc.userid AS doc_id, doc.start_time AS start, doc.end_time AS end FROM "availabilities" as doc \
-                        WHERE NOT EXISTS (SELECT * FROM "appointment" as apt \
-                         WHERE apt.doctor_id = doc.userid AND ((doc.start_time, doc.end_time)OVERLAPS(apt.start_time, apt.end_time)));')
+        return knex.raw('SELECT     u.fname AS doctor_fname, u.lname AS doctor_lname, doc.userid AS doc_id, doc.start_time AS start, doc.end_time AS end \
+                        FROM        "availabilities" as doc, "users" as u \
+                        WHERE        doc.userid = u.userid AND NOT EXISTS (SELECT * FROM "appointment" as apt \
+                                                WHERE   apt.doctor_id = doc.userid \
+                                                        AND ((doc.start_time, doc.end_time)OVERLAPS(apt.start_time, apt.end_time)));')
     },
 
     getAllApt(id) {
         try {
-            let result = knex.raw('SELECT doctor_id AS doc_id, start_time AS start, end_time as end FROM "appointment" WHERE patient_id = ?', [id])
+            let result = knex.raw('SELECT u.fname AS doctor_fname, u.lname AS doctor_lname, doctor_id AS doc_id, start_time AS start, end_time as end \
+                                    FROM "appointment" as a, "users" as u\
+                                    WHERE a.patient_id = ? AND a.doctor_id = u.userid ', [id])
 
             return result
         } catch (error) {
             throw error
         }
+    },
+
+    deleteApt(id, apt) {
+        try {
+            let params = {
+                dID: parseInt(apt.doctor_id),
+                uID: id,
+                startT: apt.start_time,
+                endT: apt.end_time
+            }
+            let result = knex.raw('DELETE FROM "appointment" \
+                                WHERE   doctor_id = :dID\
+                                        AND patient_id = :uID\
+                                        AND start_time = :startT\
+                                        AND end_time = :endT', params)
+            return result
+
+        } catch (error) {
+            throw error
+        }
+
     }
+
 }
+
+
+// var params = { x1: 1, dude: 10 };
+// return knex.raw("select * from foo where x1 = :x1 and dude = :dude", params);
