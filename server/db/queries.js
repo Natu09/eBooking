@@ -71,7 +71,7 @@ module.exports = {
         try {
             let params = {
                 dID: parseInt(apt.doctor_id),
-                uID:  parseInt(id),
+                uID: parseInt(id),
                 startT: apt.start_time,
                 endT: apt.end_time
             }
@@ -93,12 +93,12 @@ module.exports = {
             let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time) \
                                         SELECT :dID, :uID, :startT, :endT \
                                                 WHERE NOT EXISTS (SELECT * FROM "appointment" AS apt \
-                                                    WHERE ((apt.doctor_id = :dID \
+                                                    WHERE (apt.doctor_id = :dID \
                                                             AND apt.start_time = :startT \
-                                                            AND apt.end_time = :endT)) \
-                                                            OR (apt.patient_id = :uID \
+                                                            AND apt.end_time = :endT) \
+                                                            OR  apt.patient_id = :uID \
                                                                 AND ((apt.start_time,apt.end_time) \
-                                                            OVERLAPS (:startT, :endT))))', params);
+                                                                OVERLAPS (:startT, :endT)))', params);
             return result
 
         } catch (error) {
@@ -124,7 +124,7 @@ module.exports = {
         } catch (error) {
             throw error
         }
-    }   
+    }
 }
 
 

@@ -215,69 +215,70 @@
       <!-- BOOK APPOINTMENT MODAL -->
       <div>
 
-      <div class="modal fade" tabindex="-1" role="dialog" id="bookAppointment">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                  aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Book<span class="eventName"></span></h4>
-            </div>
-            <div class="modal-body" id="appoint_details">
-              <ul style="list-style-type:circle;">
-                <li><b>Doctor:</b> <span id="docId"></span></li>
-                <li><b>Start Time:</b> <span id="startTime"></span></li>
-                <li><b>End Time:</b> <span id="endTime"></span></li>
-              </ul>
+        <div class="modal fade" tabindex="-1" role="dialog" id="bookAppointment">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Book<span class="eventName"></span></h4>
+              </div>
+              <div class="modal-body">
+                <div class="alert alert-danger" role="alert" id="bookError" style="display: none"></div>
+                <ul style="list-style-type:circle;">
+                  <li><b>Doctor:</b> <span id="docId"></span></li>
+                  <li><b>Start Time:</b> <span id="startTime"></span></li>
+                  <li><b>End Time:</b> <span id="endTime"></span></li>
+                </ul>
 
-            </div>
-            <div class="modal-footer" id">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary" id="book">Book</button>
-            </div>
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
-
-
-      <!-- Cancel APPOINTMENT MODAL -->
-
-      <div class="modal fade" tabindex="-1" role="dialog" id="cancelAppointment">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                  aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Appointment Detail<span class="eventName"></span></h4>
-            </div>
-            <div class="modal-body" id="appoint_details">
-              <div class="alert alert-danger" role="alert" id="errorMessage" style="display: none"></div>
-              <ul style="list-style-type:circle;">
-                <li><b>Doctor:</b> <span id="docId2"></span></li>
-                <li><b>Start Time:</b> <span id="startTime2"></span></li>
-                <li><b>End Time:</b> <span id="endTime2"></span></li>
-              </ul>
-
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger" id="cancel">Cancel Appointment</button>
-            </div>
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
-
-
-      <!-- Success Delete -->
-      <div class="modal fade" tabindex="-1" role="dialog" id="success">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-body" id="appoint_details">
-              <h2>Appointment Cancelled!</h2>
-              <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="book">Book</button>
+              </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+
+
+        <!-- Cancel APPOINTMENT MODAL -->
+
+        <div class="modal fade" tabindex="-1" role="dialog" id="cancelAppointment">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Appointment Detail<span class="eventName"></span></h4>
+              </div>
+              <div class="modal-body">
+                <div class="alert alert-danger" role="alert" id="cancelError" style="display: none"></div>
+                <ul style="list-style-type:circle;">
+                  <li><b>Doctor:</b> <span id="docId2"></span></li>
+                  <li><b>Start Time:</b> <span id="startTime2"></span></li>
+                  <li><b>End Time:</b> <span id="endTime2"></span></li>
+                </ul>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="cancel">Cancel Appointment</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+        <!-- Success -->
+        <div class="modal fade" tabindex="-1" role="dialog" id="success">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body" id="appoint_details">
+                <h2 id="succ_messsage"></h2>
+                <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
 
     </main>
 

@@ -377,37 +377,41 @@ $(document).ready(async function () {
     $('#endTime').text(endTime);
     $('#bookAppointment').modal('show')
 
-    console.log('Hello Booking')
-    console.log(userId)
-    $('#bookAppointment').on('click', function () {
-        console.log('submited!!');
-        const app = {
-          doctor_id: event.doc_id,
-          patient_id: userId,
-          start_time: startTime,
-          end_time: endTime
-        }
-        console.log("clicked")
-        console.log(app)
-        book(app, userId)
-        .then(res => {
-          console.log(res)
+    $('#book').on('click', function () {
+      console.log('submited!!');
+      const app = {
+        doctor_id: event.doc_id,
+        patient_id: userId,
+        start_time: startTime,
+        end_time: endTime
+      }
+      book(app, userId)
+        .then(result => {
+          console.log(result)
+
+          // Note, Row count
+          if (result.rowCount == 1) {
+            console.log('made it here')
+            event.type = 'Booked'
+            event.className = ['colorBooked']
+            event.backgroundColor = '#0066ff'
+            event.title = 'Your Appointment'
+            console.log(event)
+            $("#calendar").fullCalendar('updateEvent', event);
+            $('#bookAppointment').modal('hide');
+
+            $('#succ_messsage').text('Appointment Booked!')
+            $('#success').modal('show')
+
+          } else {
+            $errorMessage = $('#bookError')
+            $errorMessage.text("Something went wrong. We couldn't book the appointment.")
+            $errorMessage.show()
+          }
         })
         .catch(err => {
           console.log(err)
-        }) 
-            // .then(result => {
-            //     console.log(result)
-            //     window.location = `/user_dashboard.html?id=${result.id}`
-            // })
-    
-            // .catch(error => {
-            //     console.error(error)
-            //     $errorMessage = $('#errorMessage')
-            //     $errorMessage.text(error.responseJSON.message)
-            //     $errorMessage.show()
-            // })
-  
+        })
     });
   }
 
@@ -450,17 +454,19 @@ $(document).ready(async function () {
             console.log(event)
             $("#calendar").fullCalendar('updateEvent', event);
             $('#cancelAppointment').modal('hide');
+
+            $('#succ_messsage').text('Appointment Cancelled!')
             $('#success').modal('show')
 
           } else {
-            $errorMessage = $('#errorMessage')
+            $errorMessage = $('#cancelError')
             $errorMessage.text("Something went wrong. We couldn't cancel your Appointment")
             $errorMessage.show()
           }
         })
         .catch(error => {
           // console.log(error)
-          $errorMessage = $('#errorMessage')
+          $errorMessage = $('#cancelError')
           $errorMessage.text(error)
           $errorMessage.show()
         })
@@ -621,36 +627,36 @@ async function getAllEvents(id) {
 // Code to book an appointment 
 
 
-  // console.log('Hello Booking')
-  // $('#bookAppointment').on('click', function () {
-  //     event.preventDefault();
-  //     console.log('submited!!');
-  //     const doctor_id = $('#docId').text();
-  //     const start_time = $('#startTime').text();
-  //     const end_time = $('#endTime').text();
-  //     const app = {
-  //         doctor_id,
-  //         start_time,
-  //         end_time,
-  //     }
-  //     console.log("clicked")
-  //     console.log(app)
-  //     book(app, userId)
-  //         // .then(result => {
-  //         //     console.log(result)
-  //         //     window.location = `/user_dashboard.html?id=${result.id}`
-  //         // })
-  
-  //         // .catch(error => {
-  //         //     console.error(error)
-  //         //     $errorMessage = $('#errorMessage')
-  //         //     $errorMessage.text(error.responseJSON.message)
-  //         //     $errorMessage.show()
-  //         // })
+// console.log('Hello Booking')
+// $('#bookAppointment').on('click', function () {
+//     event.preventDefault();
+//     console.log('submited!!');
+//     const doctor_id = $('#docId').text();
+//     const start_time = $('#startTime').text();
+//     const end_time = $('#endTime').text();
+//     const app = {
+//         doctor_id,
+//         start_time,
+//         end_time,
+//     }
+//     console.log("clicked")
+//     console.log(app)
+//     book(app, userId)
+//         // .then(result => {
+//         //     console.log(result)
+//         //     window.location = `/user_dashboard.html?id=${result.id}`
+//         // })
 
-  // });
+//         // .catch(error => {
+//         //     console.error(error)
+//         //     $errorMessage = $('#errorMessage')
+//         //     $errorMessage.text(error.responseJSON.message)
+//         //     $errorMessage.show()
+//         // })
 
-function book(app ,id) {
+// });
+
+function book(app, id) {
   console.log("clicked app func")
   return $.post(`${AUTH_URL}/user/apt/${id}`, app);
 }
