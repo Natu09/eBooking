@@ -372,12 +372,15 @@ $(document).ready(async function () {
     const event_times = dateFormatter(event)
     const startTime = event_times.start_time
     const endTime = event_times.end_time
+    const reason_input = $("#reason").val()
 
 
     $('#docId').text(event.doctor_fname + ' ' + event.doctor_lname);
     $('#startTime').text(startTime);
     $('#endTime').text(endTime);
     $('#bookAppointment').modal('show')
+    $('#reason').text(reason_input)
+    // console.log(reason_input)
 
     $('#book').on('click', function () {
       console.log('submited!!');
@@ -385,7 +388,8 @@ $(document).ready(async function () {
         doctor_id: event.doc_id,
         patient_id: userId,
         start_time: startTime,
-        end_time: endTime
+        end_time: endTime,
+        reason: reason_input,
       }
       book(app, userId)
         .then(result => {

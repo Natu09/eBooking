@@ -71,13 +71,14 @@ module.exports = {
                 dID: parseInt(apt.doctor_id),
                 uID: parseInt(id),
                 startT: apt.start_time,
-                endT: apt.end_time
+                endT: apt.end_time,
+                reason: apt.reason
             }
-
+            console.log(params)
             // This complex checks if there exist an appointment on that day with the same doctor or 
             // if that patient haas already booked an appointment that day with different doctor
-            let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time) \
-                                        SELECT :dID, :uID, :startT, :endT \
+            let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time, reason) \
+                                        SELECT :dID, :uID, :startT, :endT, :reason\
                                                 WHERE NOT EXISTS (SELECT * FROM "appointment" AS apt \
                                                     WHERE (apt.doctor_id = :dID \
                                                             AND apt.start_time = :startT \
