@@ -119,6 +119,20 @@ router.delete('/cancel/:id', authMiddleware.allowAccess, (req, res) => {
 
 });
 
+router.get('/logout', authMiddleware.allowAccess, (req, res) => {
+    try {
+        res.clearCookie('user_id');
+
+        // res.json({
+        //     message: 'Logged out',
+        //     logged_out: true
+        // });
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+});
+
 
 
 module.exports = router;

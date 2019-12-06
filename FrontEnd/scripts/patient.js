@@ -257,6 +257,10 @@ $(document).ready(async function () {
 
   });
 
+  $('#logout').on('click', function () {
+    logout()
+  })
+
   $('.filter').on('change', function () {
     $('#calendar').fullCalendar('rerenderEvents');
   });
@@ -628,37 +632,6 @@ async function getAllEvents(id) {
 
 }
 
-// Code to book an appointment 
-
-
-// console.log('Hello Booking')
-// $('#bookAppointment').on('click', function () {
-//     event.preventDefault();
-//     console.log('submited!!');
-//     const doctor_id = $('#docId').text();
-//     const start_time = $('#startTime').text();
-//     const end_time = $('#endTime').text();
-//     const app = {
-//         doctor_id,
-//         start_time,
-//         end_time,
-//     }
-//     console.log("clicked")
-//     console.log(app)
-//     book(app, userId)
-//         // .then(result => {
-//         //     console.log(result)
-//         //     window.location = `/user_dashboard.html?id=${result.id}`
-//         // })
-
-//         // .catch(error => {
-//         //     console.error(error)
-//         //     $errorMessage = $('#errorMessage')
-//         //     $errorMessage.text(error.responseJSON.message)
-//         //     $errorMessage.show()
-//         // })
-
-// });
 
 function book(app, id) {
   console.log("clicked app func")
@@ -674,6 +647,20 @@ async function deleteAppointment(apt, id) {
   })
 
   return result
+}
+
+function logout() {
+  console.log("Trying to log out")
+  localStorage.removeItem('user_id');
+  return $.get(`${AUTH_URL}/user/logout`)
+    .then(res => {
+      console.log(res)
+      window.location = '/index.html'
+      localStorage.removeItem('user_id');
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 
