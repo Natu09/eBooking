@@ -61,7 +61,10 @@ router.get('/availabilities/:id', authMiddleware.allowAccess, (req, res, next) =
                 res.send([])                     // Need to fix this later on
             }
         })
-        .catch(err => next(err))
+        .catch(err => {
+            console.log(err)
+            next(err)
+        })
 })
 
 router.get('/appointments/:id', authMiddleware.allowAccess, (req, res, next) => {
@@ -90,9 +93,9 @@ router.get('/appointments/:id', authMiddleware.allowAccess, (req, res, next) => 
 router.post('/apt/:id', (req, res, next) => {
     console.log(req.body)
     // res.send("hi")
-    queries.addApt(req.params.id, req.body)   
-        .then(results => {  
-                res.send(results);
+    queries.addApt(req.params.id, req.body)
+        .then(results => {
+            res.send(results);
         })
         .catch(err => {
 

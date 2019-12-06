@@ -37,7 +37,8 @@ module.exports = {
 
     async getAllDoc() {
         try {
-            res = await knex.raw('SELECT d.userid, u.lname, u.fname FROM doctor AS d, users AS u WHERE d.userid = u.userid;')
+            res = await knex.raw('SELECT    d.userid, u.lname, u.fname \
+                                  FROM        doctor AS d, users AS u WHERE d.userid = u.userid;')
             console.log(res.rows)
             return res.rows
 
@@ -48,18 +49,25 @@ module.exports = {
     },
 
     getAllAvailableApt() {
-        return knex.raw('SELECT     u.fname AS doctor_fname, u.lname AS doctor_lname, doc.userid AS doc_id, doc.start_time AS start, doc.end_time AS end \
-                        FROM        "availabilities" as doc, "users" as u \
-                        WHERE        doc.userid = u.userid AND NOT EXISTS (SELECT * FROM "appointment" as apt \
+        return knex.raw('SELECT     u.fname AS doctor_fname, u.lname AS doctor_lname, \
+                                    doc.userid AS doc_id, doc.start_time AS start, doc.end_time AS end, \
+                                    clin.clinic_id AS clinic_id, clin.name AS clinic_name, clin.street AS street,\
+                                    clin.city AS city, clin.province AS province\
+                        FROM        "availabilities" as doc, "users" as u, "clinic" as clin, \
+                                    "doctor" as dc\
+                        WHERE        doc.userid = u.userid AND dc.clinic_id = clin.clinic_id \
+                                    AND doc.userid = dc.userid\
+                                    AND NOT EXISTS (SELECT * FROM "appointment" as apt \
                                                 WHERE   apt.doctor_id = doc.userid \
                                                         AND ((doc.start_time, doc.end_time)OVERLAPS(apt.start_time, apt.end_time)));')
     },
 
     getAllApt(id) {
         try {
-            let result = knex.raw('SELECT u.fname AS doctor_fname, u.lname AS doctor_lname, doctor_id AS doc_id, start_time AS start, end_time as end \
-                                    FROM "appointment" as a, "users" as u\
-                                    WHERE a.patient_id = ? AND a.doctor_id = u.userid ', [id])
+            let result = knex.raw('SELECT   u.fname AS doctor_fname, u.lname AS doctor_lname, doctor_id AS doc_id, \
+                                            start_time AS start, end_time as end \
+                                    FROM    "appointment" as a, "users" as u\
+                                    WHERE   a.patient_id = ? AND a.doctor_id = u.userid ', [id])
 
             return result
         } catch (error) {
@@ -91,7 +99,7 @@ module.exports = {
             // This complex checks if there exist an appointment on that day with the same doctor or 
             // if that patient haas already booked an appointment that day with different doctor
             let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time) \
-                                        SELECT :dID, :uID, :startT, :endT \
+                                        SELECT :dID, :uID, :startT, :endT\
                                                 WHERE NOT EXISTS (SELECT * FROM "appointment" AS apt \
                                                     WHERE (apt.doctor_id = :dID \
                                                             AND apt.start_time = :startT \
@@ -100,7 +108,6 @@ module.exports = {
                                                                 AND ((apt.start_time,apt.end_time) \
                                                                 OVERLAPS (:startT, :endT)))', params);
             return result
-
         } catch (error) {
             throw error
         }
@@ -125,9 +132,6 @@ module.exports = {
             throw error
         }
     }
+
+
 }
-
-
-
-// var params = { x1: 1, dude: 10 };
-// return knex.raw("select * from foo where x1 = :x1 and dude = :dude", params);

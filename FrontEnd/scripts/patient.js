@@ -370,11 +370,13 @@ $(document).ready(async function () {
     const event_times = dateFormatter(event)
     const startTime = event_times.start_time
     const endTime = event_times.end_time
-
+    const address = event
 
     $('#docId').text(event.doctor_fname + ' ' + event.doctor_lname);
     $('#startTime').text(startTime);
     $('#endTime').text(endTime);
+    $('#clinicName').text(event.clinic_name);
+    $('#address').text(event.street + ',' + event.city + ',' + event.province)
     $('#bookAppointment').modal('show')
 
     $('#book').on('click', function () {
@@ -427,7 +429,8 @@ $(document).ready(async function () {
     $('#docId2').text(event.doctor_fname + ' ' + event.doctor_lname);
     $('#startTime2').text(startTime);
     $('#endTime2').text(endTime);
-
+    $('#clinicName2').text(event.clinic_name);
+    $('#address2').text(event.street + ',' + event.city + ',' + event.province)
     $('#cancelAppointment').modal('show')
 
     // $('#closeAppointment').modal('close')
