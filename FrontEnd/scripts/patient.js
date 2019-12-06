@@ -16,9 +16,11 @@ $(document).ready(async function () {
       $.each(results, (i, item) => {
         // console.log(item)
         let doc_name = `${item.fname} ${item.lname}`
-        let input_ops = '<input class=\'filter\' type="checkbox" value="' + `${item.userid}` + '" checked>' + doc_name
-        let $label_ops = $('<label class="checkbox-inline"></label>').html(input_ops)
-        $doc_ops.append($label_ops)
+        let input_ops = '<input class=\'filter\' type="checkbox" value= " doc_name' + `${item.userid}` + ' "  checked>' + doc_name + '</label>'
+        let $label_ops = $('<label class="checkbox-inline">').html(input_ops)
+        $doc_ops.append($label_ops) 
+
+        console.log($doc_ops.append($label_ops))
       })
     })
     .catch(err => handleError(err))

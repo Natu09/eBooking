@@ -17,10 +17,8 @@ module.exports = {
         return knex('users').where('email', email).first();
     },
 
-
-
     addUser(user) {
-        return knex('users').insert(user)
+        return knex('users').insert(user);
     },
 
     addAdmin(username, password) {
