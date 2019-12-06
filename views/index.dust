@@ -1,0 +1,63 @@
+{>"layout" /}
+
+{<body}
+    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#formModal">
+        Add Availability
+    </button>
+    <br/>
+    <h6> Appointments </h6>
+    {#data}
+       <div class="mx-auto" style="width : 75%">
+        <div class="card p-2" id="data_{id}">
+            <h5>{start_time}</h5>
+
+            <button class="btn btn-danger delete-appointment style="width:50%" data-id ="{id}" >
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                <p>Delete</p>
+            </button>
+
+        </div>
+        </div>
+    {/data}    
+
+    <!-- Add Availability Modal -->
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post" action="/appointments">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel">Add Availability</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="appdate">Date of Availability</label>
+                            <input type="date" id="appdate" name="appointment-date"
+                                value="2019-12-06"
+                                min="2018-01-01" max="2020-12-31" required /> 
+                            </div>
+                        <div class="form-group">
+                            <label for="startTime">From</label>
+                            <input type="time" id="startTime" name="appointment-start"
+                                value="08:00"
+                                min="08:00" max="17:00" required /> 
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime">To</label>
+                            <input type="time" id="endTime" name="appointment-end"
+                                value="17:00"
+                                min="08:00" max="17:00" required /> 
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary" velue="Save"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{/body}

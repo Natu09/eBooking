@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ClinicApp</title>
+    <link rel="stylesheet" href="/css/bootstrap.css"></link>
+    <link rel="stylesheet" href="/css/style.css"></link>
+</head>
+<body>
+    <div class="container"> 
+        <div class="row">
+            <div class="col-md-offset-2 col-md-7"> {+body /}
+            </div>   
+        </div> 
+    </div>
+    
+
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+    </script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
