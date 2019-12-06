@@ -6,11 +6,13 @@ $(() => {
         const fname = $('#fname').val();
         const lname = $('#lname').val();
         const email = $('#email').val();
+        const health_care = $('#health_care').val();
         const password = $('#password').val();
         const user = {
             fname,
             lname,
             email,
+            health_care,
             password
         }
         console.log(user)

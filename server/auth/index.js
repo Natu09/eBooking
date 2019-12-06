@@ -41,6 +41,7 @@ router.post('/signup', (req, res, next) => {
                             const user = {
                                 fname: req.body.fname,
                                 lname: req.body.lname,
+                                health_care: req.body.health_care,
                                 email: req.body.email,
                                 password: hash,
                                 // created_at: new Date()
