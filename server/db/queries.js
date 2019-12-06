@@ -21,6 +21,29 @@ module.exports = {
         return knex('users').insert(user);
     },
 
+
+    addUser2(user) {
+        const params = {
+            fname: user.fname,
+            lname: user.lname,
+            email: user.email,
+            password: user.password
+        }
+        return knex.raw('WITH new_userID as (\
+                                            INSERT INTO "users" (fname, lname, email, password)\
+                                            VALUES (:fname, :lname, :email, :password)\
+                                            RETURNING userid\
+                        ), new_patientID as (\
+                                            INSERT INTO "patient" (userid)\
+                                            SELECT newID.userid\
+                                            FROM new_userID as newID\
+                                            RETURNING userid\
+                        )\
+                        INSERT INTO "records" (p_userid)\
+                        SELECT newID.userid\
+                        FROM new_patientID as newID', params)
+    },
+
     addAdmin(username, password) {
         const admin_info = {
             username: username,

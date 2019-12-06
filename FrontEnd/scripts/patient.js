@@ -18,7 +18,7 @@ $(document).ready(async function () {
         let doc_name = `${item.fname} ${item.lname}`
         let input_ops = '<input class=\'filter\' type="checkbox" value= " doc_name' + `${item.userid}` + ' "  checked>' + doc_name + '</label>'
         let $label_ops = $('<label class="checkbox-inline">').html(input_ops)
-        $doc_ops.append($label_ops) 
+        $doc_ops.append($label_ops)
 
         console.log($doc_ops.append($label_ops))
       })
@@ -664,24 +664,6 @@ function logout() {
       console.log(err)
     })
 }
-
-
-// Helper functions for the calendar
-function dateFormatter(event) {
-  let options = { hour12: false };
-
-  let start = new Date(event.start);
-  let startTime = start.toLocaleString('en-US', options)
-
-  let end = new Date(event.end);
-  let endTime = end.toLocaleString('en-US', options)
-
-  return {
-    start_time: startTime,
-    end_time: endTime
-  }
-}
-
 
 function getUrlParameter(name) {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
