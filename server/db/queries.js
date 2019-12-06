@@ -20,7 +20,7 @@ module.exports = {
 
 
     addUser(user) {
-        return knex('users').insert(user)
+        return knex('users').insert(user);
     },
 
     addAdmin(username, password) {
@@ -75,18 +75,6 @@ module.exports = {
                 startT: apt.start_time,
                 endT: apt.end_time
             }
-            // let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time)\
-            // VALUES   (:dID, :uID, :startT , :endT)', params);
-
-            // let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time)\
-            //                         SELECT :dID, :uID, :startT, :endT \
-            //                             WHERE NOT EXISTS (SELECT * FROM "appointment" AS apt \
-            //                                     WHERE ((apt.doctor_id = :dID \
-            //                                             AND apt.start_time = :startT \
-            //                                             AND apt.end_time = :endT) \
-            //                                         AND	(apt.patient_id = :uID))  \
-            //                                             OR ((apt.start_time,apt.end_time) \
-            //                                             OVERLAPS (:startT, :endT))));')
 
             // This complex checks if there exist an appointment on that day with the same doctor or 
             // if that patient haas already booked an appointment that day with different doctor
@@ -129,5 +117,3 @@ module.exports = {
 
 
 
-// var params = { x1: 1, dude: 10 };
-// return knex.raw("select * from foo where x1 = :x1 and dude = :dude", params);
