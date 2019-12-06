@@ -61,7 +61,10 @@ router.get('/availabilities/:id', authMiddleware.allowAccess, (req, res, next) =
                 res.send([])                     // Need to fix this later on
             }
         })
-        .catch(err => next(err))
+        .catch(err => {
+            console.log(err)
+            next(err)
+        })
 })
 
 router.get('/appointments/:id', authMiddleware.allowAccess, (req, res, next) => {
@@ -83,16 +86,19 @@ router.get('/appointments/:id', authMiddleware.allowAccess, (req, res, next) => 
                 res.send([])                     // Need to fix this later on
             }
         })
-        .catch(err => next(err))
+        .catch(err => {
+            console.log(err)
+            next(err)
+        })
 })
 
 // route for booking  appointmets 
 router.post('/apt/:id', (req, res, next) => {
     console.log(req.body)
     // res.send("hi")
-    queries.addApt(req.params.id, req.body)   
-        .then(results => {  
-                res.send(results);
+    queries.addApt(req.params.id, req.body)
+        .then(results => {
+            res.send(results);
         })
         .catch(err => {
 
@@ -111,6 +117,20 @@ router.delete('/cancel/:id', authMiddleware.allowAccess, (req, res) => {
         })
         .catch(err => next(err))
 
+});
+
+router.get('/logout', authMiddleware.allowAccess, (req, res) => {
+    try {
+        res.clearCookie('user_id');
+
+        // res.json({
+        //     message: 'Logged out',
+        //     logged_out: true
+        // });
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
 });
 
 

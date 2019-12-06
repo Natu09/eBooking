@@ -18,7 +18,7 @@ $(document).ready(async function () {
         let doc_name = `${item.fname} ${item.lname}`
         let input_ops = '<input class=\'filter\' type="checkbox" value= " doc_name' + `${item.userid}` + ' "  checked>' + doc_name + '</label>'
         let $label_ops = $('<label class="checkbox-inline">').html(input_ops)
-        $doc_ops.append($label_ops) 
+        $doc_ops.append($label_ops)
 
         console.log($doc_ops.append($label_ops))
       })
@@ -259,6 +259,10 @@ $(document).ready(async function () {
 
   });
 
+  $('#logout').on('click', function () {
+    logout()
+  })
+
   $('.filter').on('change', function () {
     $('#calendar').fullCalendar('rerenderEvents');
   });
@@ -374,10 +378,13 @@ $(document).ready(async function () {
     const endTime = event_times.end_time
     const reason_input = $("#reason").val()
 
+    const address = event
 
     $('#docId').text(event.doctor_fname + ' ' + event.doctor_lname);
     $('#startTime').text(startTime);
     $('#endTime').text(endTime);
+    $('#clinicName').text(event.clinic_name);
+    $('#address').text(event.street + ',' + event.city + ',' + event.province)
     $('#bookAppointment').modal('show')
     $('#reason').text(reason_input)
     // console.log(reason_input)
@@ -390,6 +397,7 @@ $(document).ready(async function () {
         start_time: startTime,
         end_time: endTime,
         reason: reason_input,
+        clinic_id: event.clinic_id
       }
       book(app, userId)
         .then(result => {
@@ -433,7 +441,8 @@ $(document).ready(async function () {
     $('#docId2').text(event.doctor_fname + ' ' + event.doctor_lname);
     $('#startTime2').text(startTime);
     $('#endTime2').text(endTime);
-
+    $('#clinicName2').text(event.clinic_name);
+    $('#address2').text(event.street + ',' + event.city + ',' + event.province)
     $('#cancelAppointment').modal('show')
 
     // $('#closeAppointment').modal('close')
@@ -630,37 +639,6 @@ async function getAllEvents(id) {
 
 }
 
-// Code to book an appointment 
-
-
-// console.log('Hello Booking')
-// $('#bookAppointment').on('click', function () {
-//     event.preventDefault();
-//     console.log('submited!!');
-//     const doctor_id = $('#docId').text();
-//     const start_time = $('#startTime').text();
-//     const end_time = $('#endTime').text();
-//     const app = {
-//         doctor_id,
-//         start_time,
-//         end_time,
-//     }
-//     console.log("clicked")
-//     console.log(app)
-//     book(app, userId)
-//         // .then(result => {
-//         //     console.log(result)
-//         //     window.location = `/user_dashboard.html?id=${result.id}`
-//         // })
-
-//         // .catch(error => {
-//         //     console.error(error)
-//         //     $errorMessage = $('#errorMessage')
-//         //     $errorMessage.text(error.responseJSON.message)
-//         //     $errorMessage.show()
-//         // })
-
-// });
 
 function book(app, id) {
   console.log("clicked app func")
@@ -678,23 +656,19 @@ async function deleteAppointment(apt, id) {
   return result
 }
 
-
-// Helper functions for the calendar
-function dateFormatter(event) {
-  let options = { hour12: false };
-
-  let start = new Date(event.start);
-  let startTime = start.toLocaleString('en-US', options)
-
-  let end = new Date(event.end);
-  let endTime = end.toLocaleString('en-US', options)
-
-  return {
-    start_time: startTime,
-    end_time: endTime
-  }
+function logout() {
+  console.log("Trying to log out")
+  localStorage.removeItem('user_id');
+  return $.get(`${AUTH_URL}/user/logout`)
+    .then(res => {
+      console.log(res)
+      window.location = '/index.html'
+      localStorage.removeItem('user_id');
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
-
 
 function getUrlParameter(name) {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');

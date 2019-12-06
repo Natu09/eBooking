@@ -47,7 +47,7 @@ router.post('/signup', (req, res, next) => {
                                 // created_at: new Date()
                             }
                             User
-                                .addUser(user)
+                                .addUser2(user)
                                 .then(response => {
                                     res.json({
                                         temp: response,

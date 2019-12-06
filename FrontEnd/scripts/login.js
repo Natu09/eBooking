@@ -1,3 +1,5 @@
+redirectIfLoggedIn();
+
 $(() => {
     console.log('Hello from jQueer')
     $('form').submit((event) => {
@@ -11,7 +13,8 @@ $(() => {
         }
         login(user)
             .then(result => {
-                console.log(result)
+                // console.log(result)
+                localStorage.user_id = result.id;
                 window.location = `/user_dashboard.html?id=${result.id}`
             })
             .catch(error => {
