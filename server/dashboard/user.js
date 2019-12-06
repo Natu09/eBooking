@@ -86,7 +86,10 @@ router.get('/appointments/:id', authMiddleware.allowAccess, (req, res, next) => 
                 res.send([])                     // Need to fix this later on
             }
         })
-        .catch(err => next(err))
+        .catch(err => {
+            console.log(err)
+            next(err)
+        })
 })
 
 // route for booking  appointmets 

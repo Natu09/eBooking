@@ -65,9 +65,14 @@ module.exports = {
     getAllApt(id) {
         try {
             let result = knex.raw('SELECT   u.fname AS doctor_fname, u.lname AS doctor_lname, doctor_id AS doc_id, \
-                                            start_time AS start, end_time as end \
-                                    FROM    "appointment" as a, "users" as u\
-                                    WHERE   a.patient_id = ? AND a.doctor_id = u.userid ', [id])
+                                            a.start_time AS start, a.end_time as end, \
+                                            clin.clinic_id AS clinic_id, clin.name AS clinic_name, clin.street AS street,\
+                                            clin.city AS city, clin.province AS province\
+                                    FROM    "appointment" as a, "users" as u, "clinic" as clin, "room" as r\
+                                    WHERE   a.patient_id = ?\
+                                            AND a.doctor_id = u.userid\
+                                            AND a.room_id = r.room_number\
+                                            AND r.clinic_id = clin.clinic_id', [id])
 
             return result
         } catch (error) {
@@ -81,32 +86,40 @@ module.exports = {
                 dID: parseInt(apt.doctor_id),
                 uID: parseInt(id),
                 startT: apt.start_time,
-                endT: apt.end_time
+                endT: apt.end_time,
+                cID: apt.clinic_id
             }
-            // let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time)\
-            // VALUES   (:dID, :uID, :startT , :endT)', params);
-
-            // let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time)\
-            //                         SELECT :dID, :uID, :startT, :endT \
-            //                             WHERE NOT EXISTS (SELECT * FROM "appointment" AS apt \
-            //                                     WHERE ((apt.doctor_id = :dID \
-            //                                             AND apt.start_time = :startT \
-            //                                             AND apt.end_time = :endT) \
-            //                                         AND	(apt.patient_id = :uID))  \
-            //                                             OR ((apt.start_time,apt.end_time) \
-            //                                             OVERLAPS (:startT, :endT))));')
-
-            // This complex checks if there exist an appointment on that day with the same doctor or 
-            // if that patient haas already booked an appointment that day with different doctor
-            let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time) \
-                                        SELECT :dID, :uID, :startT, :endT\
-                                                WHERE NOT EXISTS (SELECT * FROM "appointment" AS apt \
-                                                    WHERE (apt.doctor_id = :dID \
-                                                            AND apt.start_time = :startT \
-                                                            AND apt.end_time = :endT) \
-                                                            OR  apt.patient_id = :uID \
-                                                                AND ((apt.start_time,apt.end_time) \
-                                                                OVERLAPS (:startT, :endT)))', params);
+            // let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time) \
+            //                             SELECT :dID, :uID, :startT, :endT\
+            //                                     WHERE NOT EXISTS (SELECT * FROM "appointment" AS apt \
+            //                                         WHERE (apt.doctor_id = :dID \
+            //                                                 AND apt.start_time = :startT \
+            //                                                 AND apt.end_time = :endT) \
+            //                                                 OR  apt.patient_id = :uID \
+            //                                                     AND ((apt.start_time,apt.end_time) \
+            //                                                     OVERLAPS (:startT, :endT)))', params);
+            let result = knex.raw('WITH AVAILABLE_ROOM(rID)\
+            AS\
+            (SELECT 	room.room_number\
+            FROM		"room" AS room\
+            WHERE 		room.clinic_id = :cID\
+                        AND room.room_number NOT IN(SELECT apt.room_id\
+                                                FROM "appointment" AS apt\
+                                                WHERE (apt.start_time, apt.end_time) OVERLAPS (:startT, :endT))\
+            LIMIT       1\
+             )\
+             \
+             INSERT INTO 	"appointment" (doctor_id, patient_id, start_time, end_time, room_id)\
+             SELECT 		:dID, :uID, :startT, :endT, ab.rID\
+             FROM			AVAILABLE_ROOM as ab\
+             WHERE			NOT EXISTS	(SELECT * FROM	"appointment" AS apt\
+                                         WHERE	(apt.doctor_id = :dID\
+                                                AND apt.start_time = :startT\
+                                                AND apt.end_time = :endT)\
+                                                OR	(apt.patient_id = :uID\
+                                                    AND (apt.start_time,apt.end_time)\
+                                                    OVERLAPS (:startT, :endT))\
+                                         )', params);
             return result
         } catch (error) {
             throw error

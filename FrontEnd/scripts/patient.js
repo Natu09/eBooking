@@ -385,7 +385,8 @@ $(document).ready(async function () {
         doctor_id: event.doc_id,
         patient_id: userId,
         start_time: startTime,
-        end_time: endTime
+        end_time: endTime,
+        clinic_id: event.clinic_id
       }
       book(app, userId)
         .then(result => {
