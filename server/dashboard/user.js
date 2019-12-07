@@ -94,13 +94,14 @@ router.get('/appointments/:id', authMiddleware.allowAccess, (req, res, next) => 
 
 // route for booking  appointmets 
 router.post('/apt/:id', (req, res, next) => {
-    console.log(req.body.reason)
+    console.log(req.body)
     // res.send("hi")
     queries.addApt(req.params.id, req.body)
         .then(results => {
             res.send(results);
         })
         .catch(err => {
+
             console.log(err)
             next(err)
         })

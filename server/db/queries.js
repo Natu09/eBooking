@@ -22,32 +22,27 @@ module.exports = {
     },
 
 
-    async addUser2(user) {
-        try {
-            const params = {
-                fname: user.fname,
-                lname: user.lname,
-                email: user.email,
-                password: user.password,
-                health_c: user.health_care
-            }
-            let result = await knex.raw('WITH new_userID as (\
-                                                INSERT INTO "users" (fname, lname, email, password, health_care, admin_id)\
-                                                VALUES (:fname, :lname, :email, :password, :health_c, 2)\
-                                                RETURNING userid\
-                            ), new_patientID as (\
-                                                INSERT INTO "patient" (userid)\
-                                                SELECT newID.userid\
-                                                FROM new_userID as newID\
-                                                RETURNING userid\
-                            )\
-                            INSERT INTO "records" (p_userid)\
-                            SELECT newID.userid\
-                            FROM new_patientID as newID', params)
-            return result            
-        } catch (error) {
-            throw error 
+    addUser2(user) {
+        const params = {
+            fname: user.fname,
+            lname: user.lname,
+            email: user.email,
+            password: user.password,
+            health_c: user.health_care
         }
+        return knex.raw('WITH new_userID as (\
+                                            INSERT INTO "users" (fname, lname, email, password, health_care)\
+                                            VALUES (:fname, :lname, :email, :password, :health_c)\
+                                            RETURNING userid\
+                        ), new_patientID as (\
+                                            INSERT INTO "patient" (userid)\
+                                            SELECT newID.userid\
+                                            FROM new_userID as newID\
+                                            RETURNING userid\
+                        )\
+                        INSERT INTO "records" (p_userid)\
+                        SELECT newID.userid\
+                        FROM new_patientID as newID', params)
     },
 
     addAdmin(username, password) {
@@ -89,9 +84,9 @@ module.exports = {
                                                         AND ((doc.start_time, doc.end_time)OVERLAPS(apt.start_time, apt.end_time)));')
     },
 
-    async getAllApt(id) {
+    getAllApt(id) {
         try {
-            let result = await knex.raw('SELECT   u.fname AS doctor_fname, u.lname AS doctor_lname, doctor_id AS doc_id, \
+            let result = knex.raw('SELECT   u.fname AS doctor_fname, u.lname AS doctor_lname, doctor_id AS doc_id, \
                                             a.start_time AS start, a.end_time as end, \
                                             clin.clinic_id AS clinic_id, clin.name AS clinic_name, clin.street AS street,\
                                             clin.city AS city, clin.province AS province\
@@ -107,7 +102,7 @@ module.exports = {
         }
     },
 
-    async addApt(id, apt) {
+    addApt(id, apt) {
         try {
             let params = {
                 dID: parseInt(apt.doctor_id),
@@ -141,7 +136,7 @@ module.exports = {
             //                                                 OR  apt.patient_id = :uID \
             //                                                     AND ((apt.start_time,apt.end_time) \
             //                                                     OVERLAPS (:startT, :endT)))', params);
-            let result = await knex.raw('WITH AVAILABLE_ROOM(rID)\
+            let result = knex.raw('WITH AVAILABLE_ROOM(rID)\
             AS\
             (SELECT 	room.room_number\
             FROM		"room" AS room\
@@ -169,7 +164,7 @@ module.exports = {
         }
     },
 
-    async deleteApt(id, apt) {
+    deleteApt(id, apt) {
         try {
             let params = {
                 dID: parseInt(apt.doctor_id),
@@ -177,7 +172,7 @@ module.exports = {
                 startT: apt.start_time,
                 endT: apt.end_time
             }
-            let result = await knex.raw('DELETE FROM "appointment" \
+            let result = knex.raw('DELETE FROM "appointment" \
                                 WHERE   doctor_id = :dID\
                                         AND patient_id = :uID\
                                         AND start_time = :startT\
