@@ -386,7 +386,6 @@ $(document).ready(async function () {
     $('#clinicName').text(event.clinic_name);
     $('#address').text(event.street + ',' + event.city + ',' + event.province)
     $('#bookAppointment').modal('show')
-    $('#reason').text(reason_input)
     // console.log(reason_input)
 
     $('#book').on('click', function () {
@@ -399,6 +398,8 @@ $(document).ready(async function () {
         reason: reason_input,
         clinic_id: event.clinic_id
       }
+      console.log('---------------------')
+      console.log(app)
       book(app, userId)
         .then(result => {
           console.log(result)
