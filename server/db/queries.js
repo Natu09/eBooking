@@ -114,28 +114,7 @@ module.exports = {
             }
             console.log(params)
             
-            // This complex checks if there exist an appointment on that day with the same doctor or 
-            // if that patient haas already booked an appointment that day with different doctor
-            // let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time, reason) \
-            //                             SELECT :dID, :uID, :startT, :endT, :reason\
-            //                                     WHERE NOT EXISTS (SELECT * FROM "appointment" AS apt \
-            //                                         WHERE (apt.doctor_id = :dID \
-            //                                                 AND apt.start_time = :startT \
-            //                                                 AND apt.end_time = :endT) \
-            //                                                 OR  apt.patient_id = :uID \
-            //                                                     AND ((apt.start_time,apt.end_time) \
-            //                                                     OVERLAPS (:startT, :endT)))', params);
-                
-            
-            // let result = knex.raw('INSERT INTO "appointment" (doctor_id, patient_id, start_time, end_time) \
-            //                             SELECT :dID, :uID, :startT, :endT\
-            //                                     WHERE NOT EXISTS (SELECT * FROM "appointment" AS apt \
-            //                                         WHERE (apt.doctor_id = :dID \
-            //                                                 AND apt.start_time = :startT \
-            //                                                 AND apt.end_time = :endT) \
-            //                                                 OR  apt.patient_id = :uID \
-            //                                                     AND ((apt.start_time,apt.end_time) \
-            //                                                     OVERLAPS (:startT, :endT)))', params);
+
             let result = knex.raw('WITH AVAILABLE_ROOM(rID)\
             AS\
             (SELECT 	room.room_number\
